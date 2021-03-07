@@ -1,0 +1,120 @@
+<html>
+  <head>
+    <title>Typing Test</title>
+	
+	<style>
+	.main{
+	padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+	}
+	
+	.maindiv{
+	width: 100%;
+	height: 100vh;
+	text-align: center;
+	}
+	
+	.textArea{
+	    width: 50%;
+    height: 25vh;}
+	</style>
+  </head>
+  <body>
+
+    <div class="main">
+	<div class="maindiv">
+	<h1>Calculate your typing speed</h1>
+	<br />
+	<h2 id="typedword">Click On Start Button to Type.</h2>
+	<br />
+	<textarea class="textarea" id="userInput" disabled="true"></textarea>
+	<br />
+	<button id="btn" onclick="clicked()">Start</button>
+    </div>
+	</div>
+  </body>
+  
+  	<script>
+	const userTyped= document.getElementById("userInput");
+	const btn=document.getElementById("btn");
+	const toBeTyped= document.getElementById("typedword");
+	
+	let sentence=undefined;
+	let random= undefined;
+	let randomSentence= undefined;
+	let startTime=undefined;
+	let endTime= undefined;
+	let totalTime=undefined;
+	let userStr= "";
+	let wordEntered;
+	let speed;
+	
+function playGame(){
+sentence=["My name is Nityanand", "I am a Web Developer", "I am also an JS expert", "I am learning Advance JS"]
+random= Math.floor(Math.random()*4);
+randomSentence= sentence[random];
+btn.innerHTML="Done";
+toBeTyped.innerHTML=randomSentence;
+startTime= new Date().getTime();
+}
+
+function endGame(){
+btn.innerHTML="Try Again";
+endTime= new Date().getTime();
+totalTime= ((endTime-startTime)/1000);
+userStr=userTyped.value;
+wordCount();
+}
+
+	function clicked(){
+	if(btn.innerHTML=="Start" || btn.innerHTML=="Try Again"){
+	userTyped.disabled= false;
+	playGame()
+	}
+	else if(btn.innerHTML=="Done"){
+	userTyped.disabled= true;
+	endGame();
+	correctWords()
+	}
+	
+	}
+function wordCount(){
+
+wordEntered=userTyped.value.split(" ").length;
+console.log(wordEntered);
+speed= (Math.round(wordEntered/(totalTime/60)));
+console.log(speed);
+
+}
+
+
+function correctWords(){
+let defaultstrsplit=randomSentence.split(" ");
+let userstrsplit= userStr.split(" ");
+let count=0;
+let i;
+if(userStr.length>0){
+for(i=0; i<defaultstrsplit.length; i++){
+if(defaultstrsplit[i]!=userstrsplit[i]){
+count++;
+}
+}
+
+if(count==0){
+count="accuracy is 100%"
+}
+else if(count!=0){
+let percent= Math.round(((defaultstrsplit.length-count)/defaultstrsplit.length)*100)
+count= "accuracy is " + percent + "%";
+}
+toBeTyped.innerHTML="You typed total " + speed + " words per minutes and "+ count;
+console.log(count);
+
+}
+else(
+alert("You have not typed anything")
+)
+}
+</script>
+</html>
